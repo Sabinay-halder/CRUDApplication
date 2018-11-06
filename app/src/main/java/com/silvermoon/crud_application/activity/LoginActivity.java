@@ -39,15 +39,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         email = emailEText.getText().toString().trim();
         password = passEText.getText().toString().trim();
         ArrayList<UserTable> userData = new DataBaseHelper().check_user_exist(email);
-        if (userData.get(0).email_id.equals(email) && userData.get(0).password.equals(password)) {
-            Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra("UserId", userData.get(0).getId());
-            startActivity(intent);
-            finish();
-        } else {
+        if(!userData.isEmpty()){
+            if (userData.get(0).email_id.equals(email) && userData.get(0).password.equals(password)) {
+                Intent intent = new Intent(this, UserActivity.class);
+                intent.putExtra("UserId", userData.get(0).getId().intValue());
+                startActivity(intent);
+                finish();
+            }
+            else if(userData.get(0).email_id.equals(email)){
+                if ( userData.get(0).password.equals(password)){
+                    Intent intent = new Intent(this, UserActivity.class);
+                    intent.putExtra("UserId", userData.get(0).getId());
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    make_toast(this, "Please enter correct password");
+                }
+
+            }else {
+                make_toast(this, "User doesn't exist");
+                onBackPressed();
+            }
+        }
+        else{
             make_toast(this, "User doesn't exist");
             onBackPressed();
         }
+
     }
 
     @Override
