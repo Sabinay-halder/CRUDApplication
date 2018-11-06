@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CRUD Application</string>
+    <string name="create">Create</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="number">Mobile Number</string>
+    <string name="email_id">Email ID</string>
+    <string name="location">Location</string>
+    <string name="address">Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="user">User</string>
+    <string name="save">Save</string>
+    <string name="result">Result</string>
+    <string name="login">Already Have An Account ? Please Login</string>
+    <string name="user_login">Login</string>
+</resources>

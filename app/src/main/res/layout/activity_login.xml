@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".activity.LoginActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner_gradient"
+        android:padding="10dp"
+        android:text="@string/email_id"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/emailEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corner_gradient"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_gradient"
+        android:padding="10dp"
+        android:text="@string/password"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/passwordEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corner_gradient"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:password="true"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />l̥
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corner_gradient"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/user_login"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:id="@+id/login"/>
+
+</LinearLayout>
