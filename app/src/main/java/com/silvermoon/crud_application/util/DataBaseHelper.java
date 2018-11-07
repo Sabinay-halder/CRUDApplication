@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class DataBaseHelper {
 
-    public int insertDate(String First_Name, String Last_Name, String Mobile, String Email, String Location, String Address, String Password) {
-        UserTable userTable = new UserTable(First_Name, Last_Name, Mobile, Email, Location, Address, Password);
+    public int insertDate(String First_Name, String Last_Name, String Mobile, String Email, String Location, String Address, String Password, String Current_location) {
+        UserTable userTable = new UserTable(First_Name, Last_Name, Mobile, Email, Location, Address, Password, Current_location);
         userTable.save();
         return userTable.getId().intValue();
     }
@@ -42,6 +42,13 @@ public class DataBaseHelper {
 
         }
         return Integer.parseInt(id);
+    }
+
+    public void update_location(String id, String current_location) {
+        ArrayList<UserTable> data = new Select().from(UserTable.class).where("id = ?", id).execute();
+        ArrayList<UserTable> data1 = new Select().from(UserTable.class).where("id = ?", id).execute();
+    //    data.get(0).current_location = current_location;
+     //   data.get(0).save();
     }
 
     public void deleteRecord(String id) {

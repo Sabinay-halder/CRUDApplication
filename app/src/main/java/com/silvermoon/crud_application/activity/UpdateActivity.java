@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.silvermoon.crud_application.R;
 import com.silvermoon.crud_application.util.DataBaseHelper;
 import com.silvermoon.crud_application.db.UserTable;
+import com.silvermoon.crud_application.util.PreferenceConnector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
         init();
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            UserId = bundle.getString("UserId");
+        UserId = PreferenceConnector.readString(this, PreferenceConnector.USERID, "");
+        if (!UserId.equals("")) {
             set_value(new DataBaseHelper().getSingleRecord(UserId));
         }
     }
@@ -85,11 +85,20 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             confirmPassEText.setText("");
             make_toast(this, "Confirm Password should be same as password");
         } else {
-            int userId = new DataBaseHelper().updateRecords(UserId, firstName, lastName, mobileNumber, emailId, location, address, password);
-            Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra("UserId", userId);
-            startActivity(intent);
-            onBackPressed();
+            ArrayList<UserTable> userData = new DataBaseHelper().check_user_exist(emailId);
+            {
+                if (!userData.isEmpty()) {
+                    if (userData.get(0).email_id.equals(emailId) && userData.get(0).getId().intValue() != Integer.parseInt(UserId)) {
+                        make_toast(this, "Email already Exist");
+                    } else {
+                        update_user();
+                    }
+                } else {
+                    update_user();
+                }
+
+            }
+
 
         }
 
@@ -137,5 +146,13 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    private void update_user() {
+        int userId = new DataBaseHelper().updateRecords(UserId, firstName, lastName, mobileNumber, emailId, location, address, password);
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra("UserId", userId);
+        startActivity(intent);
+        onBackPressed();
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.silvermoon.crud_application.R;
 import com.silvermoon.crud_application.db.UserTable;
 import com.silvermoon.crud_application.util.DataBaseHelper;
+import com.silvermoon.crud_application.util.PreferenceConnector;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText emailEText, passEText;
     private TextView loginTv;
     private String email, password;
+    private int UserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (!userData.isEmpty()) {
                 if (userData.get(0).email_id.equals(email) && userData.get(0).password.equals(password)) {
                     Intent intent = new Intent(this, UserActivity.class);
-                    intent.putExtra("UserId", userData.get(0).getId().intValue());
+                    UserId = userData.get(0).getId().intValue();
+                    intent.putExtra("UserId", UserId);
+                    PreferenceConnector.writeString(this,PreferenceConnector.USERID, String.valueOf(UserId));
                     startActivity(intent);
                     finish();
                 } else if (userData.get(0).email_id.equals(email)) {

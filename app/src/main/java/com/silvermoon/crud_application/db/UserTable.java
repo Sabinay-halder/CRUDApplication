@@ -23,12 +23,14 @@ public class UserTable extends Model {
     public String address;
     @Column(name = "password")
     public String password;
+    @Column(name = "current_location")
+    public String current_location;
 
     public UserTable() {
         super();
     }
 
-    public UserTable(String First_Name, String Last_Name, String Mobile, String Email, String Location, String Address, String Password) {
+    public UserTable(String First_Name, String Last_Name, String Mobile, String Email, String Location, String Address, String Password,String current_location) {
         super();
         this.first_name = First_Name;
         this.last_name = Last_Name;
@@ -37,5 +39,6 @@ public class UserTable extends Model {
         this.location = Location;
         this.address = Address;
         this.password = Password;
+        this.current_location = current_location;
     }
 }

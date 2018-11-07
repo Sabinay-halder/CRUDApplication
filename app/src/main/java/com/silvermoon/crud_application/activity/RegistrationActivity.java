@@ -1,9 +1,14 @@
 package com.silvermoon.crud_application.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import com.silvermoon.crud_application.R;
 import com.silvermoon.crud_application.db.UserTable;
 import com.silvermoon.crud_application.util.DataBaseHelper;
+import com.silvermoon.crud_application.util.PreferenceConnector;
 
 import java.util.ArrayList;
 
@@ -26,18 +32,29 @@ import static com.silvermoon.crud_application.util.Util.emailPattern;
 import static com.silvermoon.crud_application.util.Util.make_toast;
 import static com.silvermoon.crud_application.util.Util.states;
 
-public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, LocationListener {
 
     private EditText firstNameEText, lastNameEText, mobileEText, emailEText, addressEText, passwordEText, confirmPassEText;
     private Spinner locationSpinner;
     private TextView submit, login;
-    private String firstName, lastName, mobileNumber, emailId, location, address, password, confirmPassword;
+    private String firstName, lastName, mobileNumber, emailId, location, address, password, confirmPassword, current_location = "", preferenceId;
+    private int REQUEST_LOCATION = 1;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        init();
+        if (!PreferenceConnector.readString(this, PreferenceConnector.USERID, "").equals("")) {
+            Intent intent = new Intent(this, UserActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            setContentView(R.layout.activity_registration);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            check_permission();
+            init();
+        }
+
     }
 
     private void init() {
@@ -138,11 +155,56 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void login_user() {
-        int UserId = new DataBaseHelper().insertDate(firstName, lastName, mobileNumber, emailId, location, address, password);
+        int UserId = new DataBaseHelper().insertDate(firstName, lastName, mobileNumber, emailId, location, address, password, current_location);
         Intent intent = new Intent(this, UserActivity.class);
         intent.putExtra("UserId", UserId);
+        PreferenceConnector.writeString(this, PreferenceConnector.USERID, String.valueOf(UserId));
         startActivity(intent);
         finish();
     }
 
+    private void check_permission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10, this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                check_permission();
+
+            } else {
+                make_toast(this, "Permission declined. Please enable it to get current location");
+                current_location = "";
+            }
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        current_location = location.getLatitude() + "," + location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        make_toast(this, "location disabled. Please enable your location");
+
+    }
 }

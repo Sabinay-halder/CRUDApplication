@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.silvermoon.crud_application">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -27,6 +30,13 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBXYPoPFnv8kj3m-5WeIYN7KN9Y3DuG07c" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <!--
             <meta-data
             android:name="AA_MODELS"
@@ -41,7 +51,7 @@
         </activity>
         <activity android:name=".activity.UserActivity" />
         <activity android:name=".activity.UpdateActivity" />
-        <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.LoginActivity" />
     </application>
 
 </manifest>
